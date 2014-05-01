@@ -30,24 +30,42 @@ public class ProfileServiceImpl implements ProfileService{
 			response.close();
 			return returnProf;
 		}
-		else
+		else{
+			response.close();
 			return null;
+		}
 	}
 
-	public Response updateProfile(int id, Profile profile) {
+	public Profile updateProfile(int id, Profile profile) {
 		Client client = ClientBuilder.newBuilder().newClient();
 		WebTarget target = client.target(url).path(id + "");
 		Response response = target.request(MediaType.APPLICATION_JSON_TYPE)
 					.put(Entity.entity(profile, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-		return response;
+		if(response.getStatus() == 200){
+			Profile returnProf = (Profile) response.getEntity();
+			response.close();
+			return returnProf;
+		}
+		else{
+			response.close();
+			return null;
+		}
 	}
 
-	public Response postProfile(Profile profile) {
+	public Profile postProfile(Profile profile) {
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		ResteasyWebTarget target = client.target(url);
 		Response response = target.request(MediaType.APPLICATION_JSON_TYPE)
 				.post(Entity.entity(profile, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-		return response;
+		if(response.getStatus() == 200){
+			Profile returnProf = (Profile) response.getEntity();
+			response.close();
+			return returnProf;
+		}
+		else{
+			response.close();
+			return null;
+		}
 	}
 
 	public Response deleteProfile(int id) {
